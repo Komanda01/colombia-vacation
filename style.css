@@ -1,0 +1,755 @@
+/*- RESET & ROOT VARIABLES - */
+*, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+:root {
+    /*root refers to the <html> element
+      Stores variables created in css that you will reuse consistently and change easily from one place*/
+    --gold: #C9A84C;
+    --deep-green: #1a2e1e;
+    --warm-cream: #F5EDD6;
+    --rust: #B5451B;
+    --dark: #0d1a10;
+    --light-gold: #e8c97a;
+}
+
+html {
+    scroll-behavior: smooth; /* Enables smooth scrolling when clicking anchor links */
+}
+
+body {
+    background-color: var(--dark);
+    color: var(--warm-cream);
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    overflow-x: hidden;
+}
+
+/* HERO SECTION */
+.hero {
+    position: relative;
+    height: 100vh; /* Full viewport height, 100% of whatever the browser window's height currently is*/
+    /*So whether someone is on a massive desktop monitor or a small laptop, the hero always fills the entire screen top to bottom on first load*/
+    min-height: 600px;
+    /*A safety net that kicks in if 100vh ever calculates to something too small — for example on very short browser windows or certain mobile browsers. 
+    It says: "never shrink below 600px no matter what." Without this, on an unusually short screen the hero content could get crushed or overlap.*/
+    display: flex;
+    /*to use flexbox*/
+    flex-direction: column;
+    /*By default, Flexbox arranges children in a horizontal row. 
+    This flips it to a vertical column so the eyebrow text, title, divider, and slogan stack on top of each other rather than sitting side by side.*/
+    align-items: center; /*horizontally centers hero*/
+    justify-content: center; /*vertically centers hero */
+    overflow: hidden; /*By default, Flexbox arranges children in a horizontal row. This flips it to a vertical column so the eyebrow text, title, divider, and slogan stack on top of each other rather than sitting side by side.*/
+}
+
+/*Layered gradient background */
+.hero-bg {
+    position: absolute;
+    inset: 0; /* Shorthand for top/right/bottom/left: 0 */
+    background: 
+    radial-gradient(ellipse at 30% 60%, rgba(197,144,48,0.18) 0%, transparent 55%),
+    radial-gradient(ellipse at 80% 20%, rgba(181,69,27,0.15) 0%, transparent 50%),
+    linear-gradient(160deg, #0a1a0d 0%, #162512 50%, #0e1a0f 100%);
+    z-index: 0;
+}
+
+/* Grain/noise texture overlay using inline SVG as a background image */
+.hero-bg::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+    opacity: 0.35;
+    pointer-events: none; /* Clicks pass through this decorative layer */
+}
+
+/*Glowing orbs that animate and drfit */
+.orb {
+    position: absolute;
+    border-radius: 50%;
+    pointer-events: none;
+}
+
+.orb-1 {
+    width: 420px; height: 420px;
+    top: -80px; left: -120px;
+    background: radial-gradient(circle, rgba(201,168,76,0.55) 0%, transparent 70%);
+    animation: drift 18s ease-in-out infinite alternate;  /*controls how long it runs, how many times, and in what direction*/
+}
+
+.orb-2 {
+    width: 300px; height: 300px;
+    bottom: 60px; right:-60px;
+    background: radial-gradient(circle, rgba(181,69,27,0.55) 0%, transparent 70%);
+    animation: drift 14s ease-in-out infinite alternate-reverse;
+    /* alternate-reverse makes orb-2 move opposite to orb-1 */
+}
+
+/* Orbs drift slowly back and forth */
+@keyframes drift /*drift is name of keyframe so it can be referenced elsewhere in CSS*/ {
+    /*describes what should change and when*/
+    from {transform: translate(0, 0) scale(1); }
+    to { transform: translate(30px, 20px) scale(1.06); }
+    /*transform moves, scales rotates or skews an element without affecting the document layout*/
+    /*translate moves the element from its original position/starting state to its ending state(translate(horizontal movement, vertical movement) */
+    /* These are intentionally different values — if both were equal the orb would move at a perfect 45 degree diagonal which would look mechanical. 
+    The uneven 30px horizontal vs 20px vertical gives the movement a more natural, organic feel, like something floating gently in water or air*/
+    /*scale resizes the element from its centre point. 1 means 100% of its original size — no change. 1.06 means 106% — a 6% enlargement*/
+}
+
+/* Hero text container sits above the background (z-index: 2) */
+.hero-content {
+    position: relative; /*It keeps the element exactly where it naturally sits in the document flow — no repositioning, no offset, nothing moves*/
+    /*If `position: absolute` were used instead, `.hero-content` would be pulled out of the normal document flow entirely and would need explicit `top`, `left`, `right`, or `bottom` values to be placed correctly. The flexbox centering from the parent `.hero` would also stop working for it, since absolutely positioned elements are removed from flex layout*/
+    /*`position: relative` essentially says **"I want to be positioned just enough to use z-index, but otherwise leave me exactly where I am."** */
+    z-index: 2;
+    text-align: center;
+    padding: 0 1.5rem;
+}
+
+/* Small label above the main title */
+.hero-eyebrow {
+    font-family: 'Bebas Neue', sans-serif;
+    letter-spacing: 0.35em;
+    font-size: clamp(0.65rem, 1.5vw, 0.85rem); /* clamp(min, preferred, max) */
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+    opacity: 0;
+    animation: fadeUp 0.8s 0.2s forwards; /* delay 0.2s, fill-mode: forwards keeps end state */
+}
+
+/* Giant title with gradient text */
+.hero-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(5rem, 20vw, 14rem);
+    line-height: 0.9;
+    letter-spacing: 0.04em;
+    background: linear-gradient(135deg, var(--gold) 20%, var(--light-gold) 50%, var(--rust) 80%);
+    -webkit-background-clip: text; /*Clips the background to the text shape */
+    background-clip: text;
+    -webkit-text-fill-color: transparent; /* Makes the text fill transparent so gradient shows */
+    opacity: 0;
+    animation: fadeUp 0.9s 0.45s forwards;
+}
+
+/* Thin gold line between title and slogan */
+.hero-divider {
+    width: 80px;
+    height: 1px;
+    background: linear-gradient(to right, transparent, var(--gold), transparent);
+    margin: 1.2rem auto;
+    opacity: 0;
+    animation: fadeUp 0.7s 0.75s forwards;
+}
+
+.hero-slogan {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: clamp(0.9rem, 2.5vw, 1.35rem);
+    letter-spacing: 0.18em;
+    color: var(--warm-cream);
+    text-transform: uppercase;
+    opacity: 0;
+    animation: fadeUp 0.8s 0.95s forwards;
+}
+
+/* Reusable entrance animation — slides up while fading in */
+@keyframes fadeUp {
+    from { opacity: 0; transform: translate(22px);}
+    to {opacity: 1; transform: translate(0);}
+}
+
+/* Scroll cue at the bottom of the hero */
+.scroll-cue {
+    position: absolute;
+    bottom: 2.5rem;
+    left: 50%;
+    transform: translateX(-50%); /* Centers it horizontally */
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    opacity: 0;
+    animation: fadeUp 0.8s 1.5s forwards; /* Appears last, after all hero text */
+}
+
+.scroll-cue span {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 0.65rem;
+    letter-spacing: 0.3em;
+    color: var(--gold);
+}
+
+/* Animated vertical line that pulses downward */
+.scroll-line {
+    width: 1px;
+    height: 40px;
+    background: linear-gradient(to bottom, var(--gold), transparent);
+    animation: scrollPulse 2s ease-in-out infinite;
+}
+
+@keyframes scrollPulse {
+    0%, 100% {opacity: 0.4; transform: scaleY(1);}
+    50% {opacity: 1; transform: scaleY(1.2);}
+}
+
+/* NAVIGATION */
+nav {
+    position: sticky; /* Sticks to top of viewport as you scroll */
+    top: 0;
+    z-index: 100; /* Sits above all other content */
+    background: rgba(13,26,16,0.92);
+    backdrop-filter: blur(12px); /* Frosted glass effect */
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(201,168,76,0.2);
+}
+
+.nav-inner {
+    max-width: 900px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: center;
+}
+
+.nav-inner a {
+    display: block;
+    padding: 1rem 2rem;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 0.8rem;
+    letter-spacing: 0.3em;
+    color: rgba(245, 237, 214, 0.65);
+    text-decoration: none;
+    text-transform: uppercase;
+    transition: color 0.25s;
+    position: relative; /* Needed for ::after pseudo-element positioning */
+}
+
+/* The animated underline on hover — starts collapsed in the centre */
+.nav-inner a::after {
+    content: '';
+    position: absolute;
+    bottom: -1px;
+    left:50%;
+    right:50%; /* Left and right both at 50% = zero width = invisible */
+    height: 2px;
+    background: var(--gold);
+    transition: left 0.25s, right 0.25s; /* Expands outward on hover */
+}
+
+.nav-inner a:hover {
+    color: var(--gold);
+}
+
+.nav-inner a:hover::after {
+    left:10%;
+    right:10%; /* Expands to 80% width */
+}
+
+/* WELCOME SECTION */
+.welcome {
+    max-width:780px;
+    margin: 0 auto;
+    padding: 7rem 2rem 6rem;
+    text-align: center;
+    position: relative;
+}
+
+/* Decorative star symbol above the section */
+.welcome::before {
+    content: '✦';
+    display: block;
+    font-size: 1.2rem;
+    color: var(--gold);
+    margin-bottom: 2rem;
+    opacity: 0.7;
+}
+
+.welcome-label {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 0.7rem;
+    letter-spacing: 0.4em;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 1.5rem;
+}
+
+.welcome h2 {
+    font-family: "Playfair Display", Georgia, serif;
+    font-style: italic;
+    font-size: clamp(2rem, 5vw, 3.2rem);
+    font-weight: 400;
+    line-height: 1.25;
+    color: var(--warm-cream);
+    margin-bottom: 2rem;
+}
+
+.welcome-text {
+    font-size: clamp(1rem, 2vw, 1.2rem);
+    line-height: 1.85;
+    color: rgba(245, 237, 214, 0.8);
+    font-weight: 300;
+}
+
+.welcome-text em {
+    font-style: italic;
+    color: var(--light-gold); /* Highlighted italic quote stands out in gold */
+}
+
+.welcome-divider {
+    width: 120px;
+    height: 1px;
+    background: linear-gradient(to right, transparent, var(--gold), transparent);
+    margin: 3rem auto 0;
+}
+
+/* CARDS SECTION */
+.cards-section {
+    padding: 5rem 2rem 8rem;
+    max-width: 1100px;
+    margin: 0 auto;
+}
+
+.cards-label {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 0.7rem;
+    letter-spacing: 0.4em;
+    color: var(--gold);
+    text-transform: uppercase;
+    text-align: center;
+    margin-bottom: 3rem;
+}
+
+/* 
+  Grid trick: the 1.5px gap on a gold background creates 
+  the appearance of gold divider lines between cards 
+*/
+.cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1.5px;
+    background: rgba(201, 168, 76, 0.15); /* This IS the divider colour */
+    border: 1px solid rgba(201,168,76,0.15);
+}
+
+.card {
+    background: var(--dark); /* Cards sit on top, covering the gold gap background */
+    padding: 3rem 2rem;
+    text-align: center;
+    text-decoration: none;
+    color: var(--warm-cream);
+    transition: background 0.35s;
+    position: relative;
+    overflow: hidden;
+}
+
+.card::before {
+    content:'';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(201,168,76,0.05) 0%, transparent 60%);
+    opacity: 0;
+    transition: opacity 0.35s;
+}
+
+.card:hover {
+    background: #111f14;
+}
+
+.card:hover::before {
+    opacity: 1;
+}
+
+.card-icon {
+    font-size: 2rem;
+    display: block;
+    margin-bottom: 1.2rem;
+    filter: sepia(1) hue-rotate(5deg) saturate(1.5); /* Gives emoji a warm tinted look */
+}
+
+.card-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.1rem;
+    letter-spacing: 0.2em;
+    color: var(--gold);
+    margin-bottom: 0.7rem;
+}
+
+.card-desc {
+    font-size: 0.88rem;
+    color: rgba(245,237,214,0.55);
+    line-height: 1.6;
+}
+
+/* Arrow text that expands letter-spacing on hover for a nice effect */
+.card-arrow {
+    display: inline-block;
+    margin-top: 1.2rem;
+    font-size: 0.7rem;
+    letter-spacing: 0.25em;
+    color:rgba(201,168,76,0.5);
+    text-transform: uppercase;
+    transition: color 0.25s, letter-spacing 0.25s;
+}
+
+.card:hover .card-arrow {
+    color: var(--gold);
+    letter-spacing: 0.35em;
+}
+
+/* FOOTER */
+footer {
+    border-top: 1px solid rgba(201,168,76,0.15);
+    padding: 2.5rem 2rem;
+    text-align: center;
+    font-size: 0.75rem;
+    letter-spacing: 0.15em;
+    color: rgba(245,237,214,0.3);
+    font-family: 'Bebas Neue', sans-serif;
+    text-transform: uppercase;
+}
+
+footer span {
+    color: var(--gold);
+    opacity: 0.6;
+}
+
+/* - RESPONSIVE BREAKPOINTS - */
+/* - LARGE TABLETS & SMALL LAPTOPS(max 1024px) - */
+@media (max-width: 1024px) {
+    /* Slightly tighten card section padding */
+    .cards-section {
+        padding: 4rem 1.5rem 6rem;
+    }
+
+    /* Reduce hero orb sizes so they don't dominate smaller screens */
+    .orb-1 {
+        width: 300px;
+        height: 300px;
+    }
+
+    .orb-2 {
+        width: 220px;
+        height: 220px;
+    }
+}
+
+/* ── TABLETS (max 768px) ── */
+@media (max-width: 768px) {
+    
+    /* HERO */
+    .hero {
+        min-height: 500px; /* Shorter hero on tablets */
+    }
+
+    .hero-eyebrow {
+        font-size: 0.7rem;
+        letter-spacing: 0.25em;
+    }
+
+    .hero-slogan {
+        letter-spacing: 0.1em; /* Tighten to prevent overflow */
+    } 
+
+    .hero-divider {
+        width: 60px;
+        margin: 0.9rem auto;
+    }
+
+    /* Scroll cue gets a bit smaller */
+    .scroll-cue {
+        bottom: 1.5rem;
+    }
+
+    .scroll-line {
+        height: 28px;
+    }
+
+    /* NAV — switch from horizontal row to a wrapping 2x2 grid */
+    .nav-inner {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        max-width: 100%;
+    }
+
+    .nav-inner a {
+        padding: 0.85rem 1rem;
+        font-size: 0.75rem;
+        text-align: center;
+        letter-spacing: 0.2em;
+        border-bottom: 1px solid rgba(201, 168, 76, 0.08); /* Subtle dividers between rows */
+    }
+
+    /* Remove the expanding underline on touch devices, use background instead */
+    .nav-inner a:hover::after, 
+    .nav-inner a:focus::after {
+        left: 20%;
+        right: 20%;
+    }
+
+    /* WELCOME */
+    .welcome {
+        padding: 5rem 1.5rem 4rem;
+    }
+
+    .welcome::before {
+        font-size: 1rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .welcome h2 {
+        font-size: clamp(1.6rem, 5vw, 2.2rem);
+        margin-bottom: 1.5rem;
+    }
+
+    .welcome-text {
+        font-size: 1rem;
+        line-height: 1.75;
+    }
+
+    .welcome-divider {
+        margin: 2rem auto 0;
+    }
+
+    /* CARDS — force 2 columns on tablet */
+    .cards-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .card-icon {
+        font-size: 1.7rem;
+    }
+
+    /* FOOTER */
+    footer {
+        font-size: 0.65rem;
+        letter-spacing: 0.1em;
+        padding: 2rem 1.5rem;
+    }
+}
+
+/* ── MOBILE (max 480px) ── */
+@media (max-width: 480px) {
+    /* HERO */
+    .hero {
+        min-height: 420px;
+        justify-content: center;
+    }
+
+    /* Push hero content slightly higher so scroll cue doesn't overlap */
+    .hero-content {
+        padding: 0 1.2rem;
+        margin-bottom: 2rem;
+    }
+
+    .hero-eyebrow {
+        font-size: 0.6rem;
+        letter-spacing: 0.2em;
+        margin-bottom: 0.6rem;
+    }
+
+    /* The title is already fluid via clamp(), but we reinforce a floor */
+    .hero-title {
+        font-size: clamp(4.5rem, 22vw, 7rem);
+        line-height: 0.88;
+    }
+
+    .hero-slogan {
+        font-size: 0.75rem;
+        letter-spacing: 0.12em;
+    }
+
+    .hero-divider {
+        width: 50px;
+        margin: 0.8rem auto;
+    }
+
+    /* Hide orbs on mobile — they add little value and waste paint budget */
+    .orb {
+        display: none;
+    }
+
+    /* Smaller scroll cue */
+    .scroll-cue {
+        bottom: 1rem;
+    }
+
+    .scroll-line {
+        height: 22px;
+    }
+
+    /* NAV — full-width single column stack */
+    .nav-inner {
+        grid-template-columns: 1fr;
+    }
+
+    .nav-inner a{
+        padding: 0.75rem 1rem;
+        font-size: 0.72rem;
+        border-bottom: 1px solid rgba(201, 168, 76, 0.08);
+    }
+
+    /* Remove last border to avoid doubling with nav border-bottom */
+    .nav-inner a:last-child {
+        border-bottom: none;
+    }
+
+    /* WELCOME */
+    .welcome {
+        padding: 4rem 1.2rem 3.5rem;
+    }
+
+    .welcome-label {
+        font-size: 0.65rem;
+        letter-spacing: 0.3em;
+    }
+
+    .welcome h2 {
+        font-size: clamp(1.5rem, 7vw, 2rem);
+        line-height: 1.3;
+    }
+
+    .welcome-text {
+        font-size: 0.95rem;
+        line-height: 1.7;
+    }
+
+    /* CARDS — single column on mobile */
+    .cards-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .cards-label {
+        font-size: 0.65rem;
+        letter-spacing: 0.3em;
+        margin-bottom: 2rem;
+    }
+
+    .card {
+        padding: 2rem 1.5rem;
+    }
+
+    .card-title {
+        font-size: 1rem;
+    }
+
+    .card-desc {
+        font-size: 0.85rem;
+    }
+
+    /* Expand arrow spacing on touch — easier to read */
+    .card-arrow {
+        font-size: 0.68rem;
+        letter-spacing: 0.3em;
+    }
+
+    /* FOOTER */
+    footer {
+        padding: 1.8rem 1rem;
+        font-size: 0.6rem;
+        letter-spacing: 0.08em;
+        line-height: 1.8; /* Stack the footer text more comfortably */
+    }
+}
+
+/* ── VERY SMALL MOBILE (max 360px) ── */
+@media (max-width: 360px) {
+    .hero-title {
+        font-size: clamp(4rem, 24vw, 5.5rem);
+    }
+
+    .hero-slogan {
+        font-size: 0.68rem;
+        letter-spacing: 0.08em;
+    }
+
+    .welcome h2 {
+        font-size: 1.4rem;
+    }
+
+    .card {
+        padding: 1.8rem 1.2rem;
+    }
+}
+
+/* ── TOUCH DEVICE ADJUSTMENTS ── */
+/* On touch screens, hover states are unreliable.
+   This ensures cards still look clean without hover */
+   @media (hover: none) {
+    /* Always show the arrow in full gold on touch devices */
+    .card-arrow {
+        color: rgba(201, 168, 76, 0.6);
+        letter-spacing: 0.3em;
+    }
+
+    /* Disable the parallax scroll effect defined in JS
+     by resetting any inline transforms the JS may apply */
+     .hero-content {
+        transform: none !important;
+        opacity: 1 !important;
+     }
+   }
+
+   /* ── REDUCED MOTION PREFERENCE ── */
+/* Respects the OS-level "reduce motion" accessibility setting */
+@media(prefers-reduced-motion: reduce) {
+    /* Kill all animations */
+    *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+
+    /* Make sure hero content is visible even without the fadeUp animation */
+    .hero-eyebrow,
+    .hero-title,
+    .hero-divider,
+    .hero-slogan,
+    .scroll-cue {
+        opacity: 1;
+        transform: none;
+    }
+}
+
+
+
+
+
+/* {
+    background-color: bisque;
+}
+
+.position-relative {
+    margin-top: 25px;
+}
+
+.mb-0 {
+    font-size: 50px;  
+    color: #aa8453;  
+    font-weight: 500;
+    letter-spacing: 3px;
+    font-family: 'Gilda Display', serif;
+}
+
+.slogan {
+  font-family: "Yellowtail", cursive;
+  font-weight: 400;
+  font-style: normal;
+  font-size: 20px;
+  color: #aa8453;
+  letter-spacing: 3px;
+}
+
+.nav-link {
+    color: #aa8453;
+    font-family: "Yellowtail", cursive;
+    font-size: 20px;
+}
+
+.nav-link:hover {
+    color: black;
+}*/

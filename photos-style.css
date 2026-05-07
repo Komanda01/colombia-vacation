@@ -1,0 +1,571 @@
+/* ── RESET & ROOT VARIABLES ── */
+*, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+:root {
+    --gold: #c9a84c;
+    --deep-green: #1a2e1e;
+    --warm-cream: #F5EDD6;
+    --rust: #B5451B;
+    --dark: #0d1a10;
+    --light-gold: #e8c97a;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    background-color: var(--dark);
+    color: var(--warm-cream);
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    overflow-x: hidden;
+}
+
+/* ── NAVIGATION ── */
+nav {
+    position: sticky; /* activates z-index */
+    top: 0;
+    z-index: 100; /* sets the stacking level */
+    /* only works on positioned elements */
+    background: rgba(13,26,16,0.92); /* 92% opaque — 8% lets blur show through */
+
+    /* Next 3 lines work together to create frosted glass blur effect on the nav bar */
+    backdrop-filter: blur(12px); /* applies the actual blur to content behind it */
+    -webkit-backdrop-filter: blur(12px); /* Depending on browser being used, it accepts this line or previous line */
+    border-bottom: 1px solid rgba(201,168,76,0.2); /* adds a crisp edge that reinforces the glass-like separation */
+}
+
+.nav-inner {
+    max-width: 900px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: center;
+}
+
+.nav-inner a {
+    display: block;
+    padding: 1rem 2rem;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 0.8rem;
+    letter-spacing: 0.3em;
+    color: rgba(245, 237, 214, 0.65);
+    text-decoration: none;
+    text-transform: uppercase;
+    transition: color 0.25s;
+    position: relative;
+}
+
+/* Expanding underline — collapses to centre, expands outward on hover */
+.nav-inner a::after {
+    content: '';
+    position: absolute;
+    bottom: -1px;
+    left: 50%;
+    right: 50%;
+    height: 2px;
+    background: var(--gold);
+    transition: left 0.25s, right 0.25s;
+}
+
+.nav-inner a:hover {
+    color: var(--gold);
+}
+
+/* Both hover AND .active get the expanded underline */
+.nav-inner a:hover::after, .nav-inner a.active::after {
+    left: 10%; right: 10%;
+}
+
+.nav-inner a.active {
+    color: var(--gold);
+}
+
+.page-header {
+    position: relative; /* By setting `position: relative` on `.page-header`, you make it the anchor point for its own `::before` child: */
+    padding: 6rem 3rem 4rem;
+    text-align: center;
+    overflow: hidden; /* Contains the pseudo-element glow */
+}
+
+/* Atmospheric glow behind the header — no extra HTML needed */
+.page-header::before {
+    content:"";
+    position: absolute; /* anchors relative to nearest positioned ancestor */
+    /* An absolutely positioned element always anchors itself to its **nearest positioned ancestor** — the closest parent up the HTML tree that has any `position` value other than `static` */
+    inset: 0; /* stretches to fill that ancestor completely */
+    background: radial-gradient(ellipse at 20% 50%, rgba(201,168,76,0.1) 0%, transparent 60%),
+                radial-gradient(ellipse at 80% 50%, rgba(181,69,27,0.08) 0%, transparent 55%);
+    pointer-events: none; /* Clicks pass through this decorative layer */
+}
+
+/* Each header element animates in with a staggered delay */
+.page-header-eyebrow {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 0.7rem;
+    letter-spacing: 0.4em;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+    opacity: 0;
+    animation: fadeUp 0.7s 0.1s forwards; /* 0.1s delay — appears first */
+}
+
+.page-header-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(3.5rem, 12vw, 8rem); /* Fluid — scales with viewport */
+    line-height: 0.9;
+    letter-spacing: 0.05em;
+    /* Gradient clipped to text shape — same technique as index hero title */
+    background:linear-gradient(135deg, var(--gold) 20%, var(--light-gold) 50%, var(--rust) 80%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    opacity: 0;
+    animation: fadeUp 0.8s 0.3s forwards; /* 0.3s delay — appears second */
+}
+
+.page-header-divider {
+    width: 80px;
+    height: 1px;
+    background: linear-gradient(to right, transparent, var(--gold), transparent);
+    margin: 1.2rem auto;
+    opacity: 0;
+    animation: fadeUp 0.7s 0.5s forwards; /* 0.5s delay — appears third */
+}
+
+.page-header-sub {
+    font-family: "Cormorant Garamond", serif;
+    font-style: italic;
+    font-size: clamp(0.9rem, 2vw, 1.2rem); /* Adjusts font-size based on the device being used */
+    letter-spacing: 0.12em;
+    color: rgba(245,237,214,0.65);
+    opacity: 0;
+    animation: fadeUp 0.7s 0.65s forwards; /* 0.65s delay — appears last */
+}
+
+/* Shared entrance animation — same as index page */
+@keyframes fadeUp {
+    from {opacity: 0; transform: translateY(20px);}
+    to   {opacity: 1; transform: translateY(0);}
+}
+
+/* GALLERY SECTION */
+.gallery-section {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 3rem 2rem 8rem;
+}
+
+.gallery-label {
+    font-family: "Bebas Neue", sans-serif;
+    font-size: 0.7rem;
+    letter-spacing: 0.4em;
+    color: var(--gold);
+    text-transform: uppercase;
+    text-align: center;
+    margin-bottom: 4rem;
+}
+
+/* CATEGORY GRID */
+
+/*
+  Same gold-gap trick as the cards on the index page:
+  gap creates 1.5px spaces, the gold background colour
+  bleeds through those gaps to look like gold dividers
+*/
+
+.category-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* Two equal columns */
+    gap: 1.5px;
+    background: rgba(201,168,76,0.15);
+    border: 1px solid rgba(201,168,76,0.15);
+}
+
+/* CATEGORY PANELS */
+.category-panel {
+    position: relative; /* Positioning context for all absolute children */
+    overflow: hidden; /* Clips the ::before scale on hover */
+    aspect-ratio: 3/4; /* Portrait orientation — taller than wide */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end; /* Content sits at the bottom of the panel */
+    padding: 3rem 2.5rem;
+    text-decoration: none; /* Remove default link underline */
+    cursor: pointer;
+    background: #0d1a10;
+}
+
+/*
+  ::before creates the entire background of each panel — a layered gradient
+  that simulates a photo with a dark overlay gradient from bottom.
+
+  It's on a separate pseudo-element (not directly on .category-panel)
+  so it can be scaled independently on hover without scaling the text content.
+  If the background were on the panel itself, hovering would scale the text too.
+*/
+.category-panel::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    transition: transform 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    /* cubic-bezier creates a custom easing — fast start, smooth deceleration */
+    z-index: 0; /* Behind panel content */
+}
+
+/* Food panel — warm golden/rust tones like spices and candlelight */
+.category-panel.food::before {
+    background:
+    /* Dark-to-transparent gradient at the bottom — makes text readable */
+    linear-gradient(to top, rgba(13,26,16,0.95) 0%, rgba(13,26,16,0.4) 50%, rgba(13,26,16,0.1) 100%),
+    /* Warm gold glow — simulates warm restaurant lighting */
+    radial-gradient(ellipse at 40% 30%, rgba(201,168,76,0.35) 0%, transparent 55%),
+    /* Rust accent — deep warm tones */
+    radial-gradient(ellipse at 80% 70%, rgba(181,69,27,0.4) 0%, transparent 50%),
+    /* Base warm dark colour */
+    linear-gradient(135deg, #1a1a0a 0%, #2a1f08 40%, #1a0d05 100%);
+}
+
+/* Sights panel — cool green tones like jungle and mountains */
+.category-panel.sights::before {
+  background:
+    /* Same readable overlay at the bottom */
+    linear-gradient(to top, rgba(13,26,16,0.95) 0%, rgba(13,26,16,0.4) 50%, rgba(13,26,16,0.1) 100%),
+    /* Deep green glow — lush landscape feel */
+    radial-gradient(ellipse at 60% 40%, rgba(26,46,30,0.8) 0%, transparent 60%),
+    /* Subtle gold light — sunlight through trees */
+    radial-gradient(ellipse at 20% 70%, rgba(201,168,76,0.2) 0%, transparent 50%),
+    /* Base dark green */
+    linear-gradient(135deg, #081a10 0%, #0f2a18 40%, #061510 100%);
+}
+
+/*
+  ::after is a diagonal shimmer that fades in on hover.
+  Sits above the ::before background but below the panel content.
+*/
+.category-panel::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(201,168,76,0.06) 0%, transparent 60%);
+    opacity: 0;
+    transition: opacity 0.4s;
+    z-index: 1; /* Above background, below content */
+}
+
+/* On hover: scale up the ::before background for a zoom effect */
+.category-panel::before {
+    transform: scale(1.04);
+}
+
+/* On hover: reveal the shimmer overlay */
+.category-panel:hover::after {
+    opacity: 1;
+}
+
+/* PANEL CONTENT */
+/* Sits above both pseudo-elements via z-index */
+.panel-content {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+    width: 100%;
+}
+
+.panel-icon {
+    font-size: 2.5rem;
+    display: block;
+    margin-bottom: 1.2rem;
+    filter: sepia(1) hue-rotate(5deg) saturate(1.5); /* Warm tinted emoji */
+    transform: translateY(0);
+    transition: transform 0.4s ease;
+}
+
+/* Icon floats upward on hover */
+.category-panel:hover .panel-icon {
+    transform: translateY(-6px);
+}
+
+.panel-number {
+    font-family: "Bebas Neue", sans-serif;
+    font-size: 0.65rem;
+    letter-spacing: 0.4em;
+    color: var(--gold);
+    opacity: 0.6; /* Deliberately muted — secondary information */
+    margin-bottom: 0.5rem;
+    display: block; /* Makes it sit on its own line */
+}
+
+.panel-title {
+    font-family: "Bebas Neue", sans-serif;
+    font-size: clamp(2.5rem, 6vw, 4.5rem);
+    letter-spacing: 0.08em;
+    color: var(--warm-cream);
+    line-height: 1;
+    margin-bottom: 0.8rem;
+    transition: color 0.3s;
+}
+
+/* Title warms to gold on hover */
+.category-panel:hover .panel-title {
+    color: var(--light-gold);
+}
+
+.panel-divider {
+    width: 50px;
+    height: 1px;
+    background: linear-gradient(to right, transparent, var(--gold), transparent);
+    margin: 1rem auto;
+    transition: width 0.4s ease; /* Expands outward on hover */
+}
+
+/* Divider line stretches wider on hover */
+.category-panel:hover .panel-divider {
+    width: 90px;
+}
+
+.panel-desc {
+    font-family: "Cormorant Garamond", serif;
+    font-style: italic;
+    font-size: clamp(0.85rem, 1.5vw, 1rem);
+    color: rgba(245,237,214,0.55);
+    line-height: 1.6;
+    margin-bottom: 1.5rem;
+}
+
+/* Call-to-action text — subtle underline, brightens on hover */
+.panel-cta {
+    display: inline-block;
+    font-family: "Bebas Neue", sans-serif;
+    font-size: 0.7rem;
+    letter-spacing: 0.35em;
+    color: rgba(201,168,76,0.6);
+    text-transform: uppercase;
+    transition: color 0.3s, letter-spacing 0.3s;
+    border-bottom: 1px solid rgba(201,168,76,0.2);
+    padding-bottom: 0.2rem;
+}
+
+.category-panel:hover .panel-cta {
+    color: var(--gold);
+    letter-spacing: 0.45em;
+}
+
+/* CORNER ACCENTS */
+/*
+  Four small L-shaped brackets positioned in each corner of the panel.
+  They're invisible by default and fade in on hover.
+  Each one only has two borders — forming an L shape — using the
+  specific combination of border properties for each corner.
+*/
+.corner-accent {
+    position: absolute;
+    width: 30px;
+    height: 30px;
+    z-index: 2; /* Above background pseudo-elements */
+    opacity: 0;
+    transition: opacity 0.4s;
+}
+
+/* Top-left — border on top and left only */
+.corner-accent.tl {
+    top: 1.2rem;
+    left: 1.2rem;
+    border-top: 1px solid var(--gold);
+    border-left:1px solid var(--gold);
+}
+
+/* Top-right — border on top and right only */
+.corner-accent.tr {
+    top: 1.2rem;
+    right: 1.2rem;
+    border-top: 1px solid var(--gold);
+    border-right: 1px solid var(--gold);
+}
+
+/* Bottom-left — border on bottom and left only */
+.corner-accent.bl {
+    bottom: 1.2rem;
+    left: 1.2rem;
+    border-bottom: 1px solid var(--gold);
+    border-left: 1px solid var(--gold);
+}
+
+/* Bottom-right — border on bottom and left only */
+.corner-accent.br {
+    bottom: 1.2rem;
+    right: 1.2rem;
+    border-bottom: 1px solid var(--gold);
+    border-right: 1px solid var(--gold);
+}
+
+/* All four corners fade in together on panel hover */
+.category-panel:hover .corner-accent {
+    opacity: 1;
+}
+
+/* BOTTOM STRIP*/
+/*
+  A decorative separator between the gallery and footer.
+  Uses flexbox to place two gradient lines flanking a text label —
+  the lines grow to fill all remaining space with flex: 1.
+*/
+.bottom-strip {
+    border-top: 1px solid rgba(201,168,76,0.15);
+    max-width: 1200px;
+    margin: 0 auto 4rem;
+    padding: 3rem 2rem 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 2rem;
+}
+
+/* Left line fades from transparent to gold — pointing right */
+.strip-line {
+    flex: 1; /* Grows to fill available space */
+    height: 1px;
+    background: linear-gradient(to right, transparent, rgba(201,168,76,0.2));
+}
+
+.strip-line.right {
+    background: linear-gradient(to left, transparent, rgba(201,168,76,0.2));
+}
+
+.strip_text {
+    font-family: "Cormorant Garamond", serif;
+    font-style: italic;
+    font-size: 0.95rem;
+    color: rgba(245,237,214,0.4);
+    letter-spacing: 0.08em;
+    text-align: center;
+    white-space: nowrap; /* Prevents text from wrapping mid-phrase */
+}
+
+/* FOOTER */
+footer {
+    border-top: 1px solid rgba(201,168,76,0.15);
+    padding: 2.5rem 2rem;
+    text-align: center;
+    font-size: 0.75rem;
+    letter-spacing: 0.15em;
+    color:rgba(245,237,214,0.3);
+    font-family: "Bebas Neue", sans-serif;
+    text-transform: uppercase;
+}
+
+footer span {
+    color: var(--gold); opacity: 0.6;
+}
+
+/* RESPONSIVE BREAKPOINTS */
+@media (max-width: 768px) {
+    .page-header {
+        padding: 4rem 1.5rem 3rem;
+    }
+
+    /* Nav collapses to 2x2 grid */
+    .nav-inner {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        max-width: 100%;
+    }
+
+    .nav-inner a {
+        padding: 0.85rem 1rem;
+        font-size: 0.75rem;
+        text-align: center;
+        letter-spacing: 0.2em;
+        border-bottom: 1px solid rgba(201,168,76,0.08);
+    }
+
+    /* Panels stack vertically on tablet */
+    .category-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .category-panel {
+        aspect-ratio: 4 / 3;
+        padding: 2.5rem 2rem;
+    }
+
+    .panel-title {
+        font-size: clamp(2.2rem, 10vw, 3.5rem);
+    }
+
+    /* Strip wraps vertically on small screens */
+    .bottom-strip {
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    .strip-line {
+        width: 80px;
+        height: 1px;
+        flex: none; /* Override flex: 1 so it doesn't stretch full width */
+    }
+}
+
+@media (max-width: 480px) {
+    /* Nav collapses to single column stack */
+    .nav-inner {
+        grid-template-columns: 1fr;
+    }
+
+    .nav-inner a {
+        padding:0.75rem 1rem;
+        font-size: 0.72rem;
+        border-bottom: 1px solid rgba(201,168,76,0.08);
+    }
+
+    .nav-inner a:last-child {
+        border-bottom: none;
+    }
+
+    .page-header {
+        padding: 3rem 1.2rem 2.5rem;
+    }
+
+    .gallery-section {
+        padding: 2rem 1.2rem 5rem;
+    }
+
+    /* Square ratio works well on narrow mobile screens */
+    .category-panel {
+        aspect-ratio: 1 / 1;
+        padding: 2rem 1.5rem;
+    }
+
+    .panel-icon {
+        font-size: 2rem;
+    }
+
+    .bottom-strip {
+        margin-bottom: 2rem;
+        padding: 2rem 1.2rem 0;
+    }
+
+    footer {
+        font-size: 0.6rem;
+        padding: 1.8rem 1rem;
+    }
+
+    /* Kill all animations for users who prefer reduced motion */
+    @media (prefers-reduced-motion: reduce) {
+        *, *::before, *::after {
+            animation-duration: 0.01ms !important;
+            transition-duration: 0.01ms !important;
+        }
+
+        /* Force header elements visible since animations are killed */
+        .page-header-eyebrow, .page-header-title, .page-header-divider, .page-header-sub {
+            opacity: 1;
+            transform: none;
+        }
+    }
+}

@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Food Gallery — Komanda's Colombia Vacation</title>
+  <link rel="icon" type="image/x-icon" href="Colombia flag.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&family=Bebas+Neue&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="food-gallery-style.css">
+</head>
+<body>
+
+  <!-- STICKY NAVIGATION -->
+  <nav>
+    <div class="nav-inner">
+      <a href="index.html">Home</a>
+      <a href="photos.html" class="active">Photos</a>
+      <a href="videos.html">Videos</a>
+      <a href="experiences.html">Stories</a>
+    </div>
+  </nav>
+
+  <!-- PAGE HEADER -->
+  <header class="page-header">
+    <!--
+      Breadcrumb — shows the user's location in the site:
+      Photos › Food Collection
+      The arrow › is a visual separator between levels
+    -->
+    <p class="breadcrumb">
+      <a href="photos2.html">Photos</a>
+      <span>›</span>
+      Food Collection
+    </p>
+    <h1 class="page-header-title">Food</h1>
+    <div class="page-header-divider"></div>
+    <p class="page-header-sub">12 dishes &nbsp;·&nbsp; Colombia, 2022</p>
+  </header>
+
+  <!-- INTRO TEXT -->
+  <section class="intro">
+    <p class="intro-label">A Culinary Journey</p>
+    <p>
+      In my two weeks in Colombia, I was introduced to a wide range of food that
+      were new to me. These foods were simple yet exotic and delicious. Some of
+      the foods didn't make it on the website because I was too busy enjoying
+      them to the extent that I forgot to take a picture.
+      <br><br>
+      <em>The food you will see here are a few that I remembered to take pictures
+      of while I was enjoying it. Once in a while I crave these foods.</em>
+    </p>
+    <div class="intro-divider"></div>
+  </section>
+
+  <!-- GALLERY -->
+  <section class="gallery-section">
+    <p class="gallery-count">01 — 12 &nbsp;·&nbsp; Food Collection</p>
+
+    <!--
+      Each .gallery-item is an <a> tag so the whole cell is clickable.
+      data-index stores the item's position for the lightbox to reference.
+      href points to the actual image file.
+    -->
+    <div class="gallery-grid" id="galleryGrid">
+
+      <!-- ITEM 1 — spans 2 columns (featured) -->
+      <a class="gallery-item" href="food1.jpg" data-index="0">
+        <!--
+          onerror fires if the image file is not found.
+          It hides the broken <img> and shows the placeholder div instead.
+          This means the page looks intentional even without real photos.
+        -->
+        <img src="food1.jpg" alt="Arroz con Coco"
+          onerror="this.style.display='none';
+                   this.nextElementSibling.style.display='flex';">
+        <div class="img-placeholder" style="display:none">
+          <span class="placeholder-icon">🍚</span>
+          <span class="placeholder-label">food1.jpg</span>
+        </div>
+        <div class="gallery-overlay">
+          <span class="overlay-number">01 · Collection</span>
+          <div class="overlay-divider"></div>
+          <span class="overlay-caption">
+            Arroz Con Coco, Patacones, Seasoned Chicken and Salad
+          </span>
+        </div>
+        <div class="overlay-icon">⊕</div>
+      </a>
+
+      <!-- ITEM 2 -->
+      <a class="gallery-item" href="food2.jpg" data-index="1">
+        <img src="food2.jpg" alt="Arepa and Bacon"
+          onerror="this.style.display='none';
+                   this.nextElementSibling.style.display='flex';">
+        <div class="img-placeholder" style="display:none">
+          <span class="placeholder-icon">🫓</span>
+          <span class="placeholder-label">food2.jpg</span>
+        </div>
+        <div class="gallery-overlay">
+          <span class="overlay-number">02 · Collection</span>
+          <div class="overlay-divider"></div>
+          <span class="overlay-caption">Arepa and Bacon</span>
+        </div>
+        <div class="overlay-icon">⊕</div>
+      </a>
+
+      <!-- ITEM 3 -->
+      <a class="gallery-item" href="food3.jpg" data-index="2">
+        <img src="food3.jpg" alt="Bandeja Arroz and Fries"
+          onerror="this.style.display='none';
+                   this.nextElementSibling.style.display='flex';">
+        <div class="img-placeholder" style="display:none">
+          <span class="placeholder-icon">🍟</span>
+          <span class="placeholder-label">food3.jpg</span>
+        </div>
+        <div class="gallery-overlay">
+          <span class="overlay-number">03 · Collection</span>
+          <div class="overlay-divider"></div>
+          <span class="overlay-caption">Bandeja Arroz and Fries</span>
+        </div>
+        <div class="overlay-icon">⊕</div>
+      </a>
+
+      <!-- ITEM 4 -->
+      <a class="gallery-item" href="food4.jpg" data-index="3">
+        <img src="food4.jpg" alt="Shrimp Cocktail"
+          onerror="this.style.display='none';
+                   this.nextElementSibling.style.display='flex';">
+        <div class="img-placeholder" style="display:none">
+          <span class="placeholder-icon">🍤</span>
+          <span class="placeholder-label">food4.jpg</span>
+        </div>
+        <div class="gallery-overlay">
+          <span class="overlay-number">04 · Collection</span>
+          <div class="overlay-divider"></div>
+          <span class="overlay-caption">
+            Shrimp Cocktail, Avocadoes and Biscuit
+          </span>
+        </div>
+        <div class="overlay-icon">⊕</div>
+      </a>
+
+      <!-- ITEM 5 -->
+      <a class="gallery-item" href="food5.jpg" data-index="4">
+        <img src="food5.jpg" alt="Rice and Fried Fish"
+          onerror="this.style.display='none';
+                   this.nextElementSibling.style.display='flex';">
+        <div class="img-placeholder" style="display:none">
+          <span class="placeholder-icon">🐟</span>
+          <span class="placeholder-label">food5.jpg</span>
+        </div>
+        <div class="gallery-overlay">
+          <span class="overlay-number">05 · Collection</span>
+          <div class="overlay-divider"></div>
+          <span class="overlay-caption">
+            Rice, Fried Fish, Plantain, Salad and Beans Stew
+          </span>
+        </div>
+        <div class="overlay-icon">⊕</div>
+      </a>
+
+      <!-- ITEM 6 -->
+      <a class="gallery-item" href="food6.jpg" data-index="5">
+        <img src="food6.jpg" alt="Rice Spaghetti Chicken"
+          onerror="this.style.display='none';
+                   this.nextElementSibling.style.display='flex';">
+        <div class="img-placeholder" style="display:none">
+          <span class="placeholder-icon">🍝</span>
+          <span class="placeholder-label">food6.jpg</span>
+        </div>
+        <div class="gallery-overlay">
+          <span class="overlay-number">06 · Collection</span>
+          <div class="overlay-divider"></div>
+          <span class="overlay-caption">
+            Rice, Spaghetti, Chicken, Plantain and Salad
+          </span>
+        </div>
+        <div class="overlay-icon">⊕</div>
+      </a>
+
+      <!-- ITEM 7 — featured (spans 2 columns via nth-child CSS) -->
+      <a class="gallery-item" href="food7.jpg" data-index="6">
+        <img src="food7.jpg" alt="Burrito"
+          onerror="this.style.display='none';
+                   this.nextElementSibling.style.display='flex';">
+        <div class="img-placeholder" style="display:none">
+          <span class="placeholder-icon">🌯</span>
+          <span class="placeholder-label">food7.jpg</span>
+        </div>
+        <div class="gallery-overlay">
+          <span class="overlay-number">07 · Collection</span>
+          <div class="overlay-divider"></div>
+          <span class="overlay-caption">Burrito</span>
+        </div>
+        <div class="overlay-icon">⊕</div>
+      </a>
+
+      <!-- ITEM 8 -->
+      <a class="gallery-item" href="food8.jpg" data-index="7">
+        <img src="food8.jpg" alt="Rice and Plantain"
+          onerror="this.style.display='none';
+                   this.nextElementSibling.style.display='flex';">
+        <div class="img-placeholder" style="display:none">
+          <span class="placeholder-icon">🍌</span>
+          <span class="placeholder-label">food8.jpg</span>
+        </div>
+        <div class="gallery-overlay">
+          <span class="overlay-number">08 · Collection</span>
+          <div class="overlay-divider"></div>
+          <span class="overlay-caption">Rice, Stew and Plantain</span>
+        </div>
+        <div class="overlay-icon">⊕</div>
+      </a>
+
+      <!-- ITEM 9 -->
+      <a class="gallery-item" href="food9.jpg" data-index="8">
+        <img src="food9.jpg" alt="Egg Arepa"
+          onerror="this.style.display='none';
+                   this.nextElementSibling.style.display='flex';">
+        <div class="img-placeholder" style="display:none">
+          <span class="placeholder-icon">🥚</span>
+          <span class="placeholder-label">food9.jpg</span>
+        </div>
+        <div class="gallery-overlay">
+          <span class="overlay-number">09 · Collection</span>
+          <div class="overlay-divider"></div>
+          <span class="overlay-caption">Egg Arepa</span>
+        </div>
+        <div class="overlay-icon">⊕</div>
+      </a>
+
+      <!-- ITEM 10 -->
+      <a class="gallery-item" href="food10.jpg" data-index="9">
+        <img src="food10.jpg" alt="Rice Spaghetti Blood Sausage"
+          onerror="this.style.display='none';
+                   this.nextElementSibling.style.display='flex';">
+        <div class="img-placeholder" style="display:none">
+          <span class="placeholder-icon">🍖</span>
+          <span class="placeholder-label">food10.jpg</span>
+        </div>
+        <div class="gallery-overlay">
+          <span class="overlay-number">10 · Collection</span>
+          <div class="overlay-divider"></div>
+          <span class="overlay-caption">Rice, Spaghetti and Blood Sausage</span>
+        </div>
+        <div class="overlay-icon">⊕</div>
+      </a>
+
+      <!-- ITEM 11 -->
+      <a class="gallery-item" href="food11.jpg" data-index="10">
+        <img src="food11.jpg" alt="Rice Chicken Wings Plantain"
+          onerror="this.style.display='none';
+                   this.nextElementSibling.style.display='flex';">
+        <div class="img-placeholder" style="display:none">
+          <span class="placeholder-icon">🍗</span>
+          <span class="placeholder-label">food11.jpg</span>
+        </div>
+        <div class="gallery-overlay">
+          <span class="overlay-number">11 · Collection</span>
+          <div class="overlay-divider"></div>
+          <span class="overlay-caption">
+            Rice, Chicken Wings, Plantain and Salad
+          </span>
+        </div>
+        <div class="overlay-icon">⊕</div>
+      </a>
+
+      <!-- ITEM 12 -->
+      <a class="gallery-item" href="Empanada.jpg" data-index="11">
+        <img src="Empanada.jpg" alt="Empanada"
+          onerror="this.style.display='none';
+                   this.nextElementSibling.style.display='flex';">
+        <div class="img-placeholder" style="display:none">
+          <span class="placeholder-icon">🥟</span>
+          <span class="placeholder-label">Empanada.jpg</span>
+        </div>
+        <div class="gallery-overlay">
+          <span class="overlay-number">12 · Collection</span>
+          <div class="overlay-divider"></div>
+          <span class="overlay-caption">Empanada</span>
+        </div>
+        <div class="overlay-icon">⊕</div>
+      </a>
+
+    </div>
+  </section>
+
+  <!-- BOTTOM STRIP -->
+  <div class="bottom-strip">
+    <div class="strip-line"></div>
+    <p class="strip-text">End of Food Collection &nbsp;·&nbsp; Colombia, 2022</p>
+    <div class="strip-line right"></div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    <span>Colombia</span> &nbsp;·&nbsp; Komanda's Vacation Journal
+    &nbsp;·&nbsp; Made with love &amp; many memories
+  </footer>
+
+  <!--
+    LIGHTBOX — lives outside the gallery section.
+    position: fixed means it overlays the entire viewport.
+    It starts invisible (opacity: 0, pointer-events: none)
+    and becomes visible when JavaScript adds the .open class.
+  -->
+  <div class="lightbox" id="lightbox" role="dialog" aria-modal="true">
+    <div class="lightbox-inner">
+      <button class="lightbox-close" id="lightboxClose">✕ &nbsp; Close</button>
+      <div class="lightbox-img-wrap" id="lightboxImgWrap">
+        <!-- Corner accent brackets — purely decorative -->
+        <div class="lb-corner tl"></div>
+        <div class="lb-corner tr"></div>
+        <div class="lb-corner bl"></div>
+        <div class="lb-corner br"></div>
+        <!-- Image is injected here by JavaScript -->
+      </div>
+      <div class="lightbox-caption-wrap">
+        <div class="lb-line"></div>
+        <div class="lightbox-caption-text">
+          <span class="lightbox-num" id="lightboxNum"></span>
+          <span class="lightbox-caption" id="lightboxCaption"></span>
+        </div>
+        <div class="lb-line right"></div>
+      </div>
+      <!-- Previous and next navigation buttons -->
+      <button class="lightbox-nav lightbox-prev" id="lightboxPrev">‹</button>
+      <button class="lightbox-nav lightbox-next" id="lightboxNext">›</button>
+    </div>
+  </div>
+
+  <script src="food-gallery-script.js"></script>
+</body>
+</html>

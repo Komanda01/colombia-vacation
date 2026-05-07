@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" type="image/x-icon" href="Colombia flag.png">
+  <title>Videos — Komanda's Colombia Vacation</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&family=Bebas+Neue&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="videos-style.css">
+</head>
+<body>
+
+  <!-- NAVIGATION -->
+  <nav>
+    <div class="nav-inner">
+      <a href="index.html">Home</a>
+      <a href="photos.html">Photos</a>
+      <a href="videos.html" class="active">Videos</a>
+      <a href="experiences.html">Stories</a>
+    </div>
+  </nav>
+
+  <!-- PAGE HEADER -->
+  <header class="page-header">
+    <p class="page-header-eyebrow">
+      Komanda's Vacation Journal &nbsp;·&nbsp; Colombia 2022
+    </p>
+    <h1 class="page-header-title">Videos</h1>
+    <div class="page-header-divider"></div>
+    <p class="page-header-sub">Three films from two weeks in paradise</p>
+  </header>
+
+  <!-- VIDEOS SECTION -->
+  <section class="videos-section">
+    <p class="videos-label">The Collection</p>
+
+    <!--
+      VIDEO CARD STRUCTURE:
+      Each card has two columns inside .video-card-inner:
+      Left  → .video-meta  (large number, vertical line, label)
+      Right → .video-content (title row + video player)
+    -->
+
+    <!-- VIDEO 1 -->
+    <div class="video-card">
+      <div class="video-card-inner">
+
+        <!-- LEFT COLUMN — number and meta -->
+        <div class="video-meta">
+          <span class="video-number">01</span>
+          <div class="video-meta-line"></div>
+          <span class="video-meta-label">Colombia</span>
+        </div>
+
+        <!-- RIGHT COLUMN — title and player -->
+        <div class="video-content">
+          <div class="video-title-row">
+            <h2 class="video-title">Video One</h2>
+            <div class="video-title-divider"></div>
+          </div>
+
+          <!--
+            .video-wrapper — border and corner accents
+            .video-ratio   — enforces 16:9 aspect ratio
+            <video>        — the actual player
+            .video-placeholder — shown when file not found
+          -->
+          <div class="video-wrapper">
+            <div class="video-corner tl"></div>
+            <div class="video-corner tr"></div>
+            <div class="video-corner bl"></div>
+            <div class="video-corner br"></div>
+            <div class="video-ratio">
+              <video controls preload="metadata">
+                <source src="Video1lv1.mp4" type="video/mp4">
+              </video>
+              <div class="video-placeholder">
+                <span class="video-placeholder-icon">🎬</span>
+                <span class="video-placeholder-text">Video1lv1.mp4</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- VIDEO 2 -->
+    <div class="video-card">
+      <div class="video-card-inner">
+        <div class="video-meta">
+          <span class="video-number">02</span>
+          <div class="video-meta-line"></div>
+          <span class="video-meta-label">Colombia</span>
+        </div>
+        <div class="video-content">
+          <div class="video-title-row">
+            <h2 class="video-title">Video Two</h2>
+            <div class="video-title-divider"></div>
+          </div>
+          <div class="video-wrapper">
+            <div class="video-corner tl"></div>
+            <div class="video-corner tr"></div>
+            <div class="video-corner bl"></div>
+            <div class="video-corner br"></div>
+            <div class="video-ratio">
+              <video controls preload="metadata">
+                <source src="Video2lv1.mp4" type="video/mp4">
+              </video>
+              <div class="video-placeholder">
+                <span class="video-placeholder-icon">🎬</span>
+                <span class="video-placeholder-text">Video2lv1.mp4</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- VIDEO 3 -->
+    <div class="video-card">
+      <div class="video-card-inner">
+        <div class="video-meta">
+          <span class="video-number">03</span>
+          <div class="video-meta-line"></div>
+          <span class="video-meta-label">Colombia</span>
+        </div>
+        <div class="video-content">
+          <div class="video-title-row">
+            <h2 class="video-title">Video Three</h2>
+            <div class="video-title-divider"></div>
+          </div>
+          <div class="video-wrapper">
+            <div class="video-corner tl"></div>
+            <div class="video-corner tr"></div>
+            <div class="video-corner bl"></div>
+            <div class="video-corner br"></div>
+            <div class="video-ratio">
+              <video controls preload="metadata">
+                <source src="Video3lv2_1.mp4" type="video/mp4">
+              </video>
+              <div class="video-placeholder">
+                <span class="video-placeholder-icon">🎬</span>
+                <span class="video-placeholder-text">Video3lv2_1.mp4</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- PERSONAL NOTE -->
+  <!--
+    Your honest message about the fourth video gets its own
+    styled section rather than plain paragraph text
+  -->
+  <section class="note-section">
+    <p class="note-label">A Note</p>
+    <div class="note-divider-top"></div>
+    <p class="note-text">
+      There's a fourth and final video about my trip to Colombia.
+      Unfortunately, the motivation I once had to make the website
+      and the videos has faded away after making the third video.
+      Also, I saw no point in putting together a fourth one if no
+      one is going to watch it.
+      <br><br>
+      Therefore, if you watched all three,
+      <em>thank you for taking time out of your day to view this.</em>
+      If you would like to watch the fourth one, message me and I
+      will send you the video. Thanks.
+    </p>
+    <div class="note-divider-bottom"></div>
+  </section>
+
+  <!-- BOTTOM STRIP -->
+  <div class="bottom-strip">
+    <div class="strip-line"></div>
+    <p class="strip-text">Three videos &nbsp;·&nbsp; Colombia, 2022</p>
+    <div class="strip-line right"></div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    <span>Colombia</span> &nbsp;·&nbsp; Komanda's Vacation Journal
+    &nbsp;·&nbsp; Made with love &amp; many memories
+  </footer>
+
+  <script src="videos-script.js"></script>
+</body>
+</html>
